@@ -13,7 +13,7 @@ services:
       dockerfile: Dockerfile.streamlit
     container_name: heart_ui
     ports:
-      - "8503:8501"   # host 8503 → container 8501
+      - "8503:8501"
     environment:
       - API_URL=http://api:8000
     depends_on:
