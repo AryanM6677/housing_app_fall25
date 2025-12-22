@@ -1,43 +1,20 @@
-
 services:
   api:
     build:
-      context: ./api
-      dockerfile: Dockerfile
-    container_name: housing-api
-    # Use 'expose' instead of 'ports' to keep it internal only
-    expose:
-      - "8000"
-    volumes:
-      # Mount models folder for future model loading
-      - ./models:/app/models:ro
-    environment:
-      - PYTHONUNBUFFERED=1
-    networks:
-      - housing-network
-    restart: unless-stopped
-
-  streamlit:
-    build:
-      context: ./streamlit
-      dockerfile: Dockerfile
-    container_name: housing-streamlit
-    # Only the Streamlit app is publicly accessible
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: heart_api
     ports:
-      - "8501:8501"
-    volumes:
-      # Mount data folder for future JSON schema loading
-      - ./data:/app/data:ro
+      - "8000:8000"
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: heart_ui
+    ports:
+      - "8503:8501"   # host 8503 → container 8501
     environment:
       - API_URL=http://api:8000
-      - PYTHONUNBUFFERED=1
-    networks:
-      - housing-network
     depends_on:
-      api:
-        condition: service_healthy
-    restart: unless-stopped
-
-networks:
-  housing-network:
-    driver: bridge
+      - api

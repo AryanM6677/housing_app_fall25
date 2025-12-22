@@ -1,0 +1,5 @@
+experiment_id: 16
+experiment_name: exp_16
+hyperparameter_tuning: true
+model: SVM
+pca_applied: false
